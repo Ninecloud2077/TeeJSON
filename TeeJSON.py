@@ -32,9 +32,9 @@ def loadfile():
         k=fileopenbox('导入键',Title)
         if k:
             with open(k,'r',encoding='utf-8') as k:
-            r=k.readlines()
-            for j in r:
-                Items[j]=''
+                r=k.readlines()
+                for j in r:
+                    Items[j]=''
 
     elif i=='直接导入json键值对':
         msgbox('注意：使用utf-8编码格式。',Title)
@@ -42,8 +42,8 @@ def loadfile():
             k=fileopenbox('导入键值对',Title)
             if k:
                 r=json.load(open(k,'r',encoding='utf-8'))
-            for j in r['translation']:
-                Items[j['key']]=j['value']
+                for j in r['translation']:
+                    Items[j['key']]=j['value']
 
         except json.decoder.JSONDecodeError as e:
             msgbox('解码json时发生了错误:{}'.format(e),Title)
@@ -58,6 +58,16 @@ def loadfile():
     '''
 
 
+def delitem():
+    global Items
+    c=choicebox('下面展示了当前所有的键。选中一个键进行删除。',Title,Items.keys())
+    if c and ynbox('删除键值对：{}:{}？'.format(c,Items[c]),Title):
+        if len(Items.keys())<=3:
+            msgbox('删除失败：键值对至少需要有两个键！',Title)
+            return
+        Items.pop(c)
+        msgbox('删除成功！',Title)
+    return
 
 
 def moveitem():
@@ -104,7 +114,7 @@ def edititem():
             Items[l[0]]=l[1]
             continue
         elif len(Items.keys())>2:
-        Items.pop(c)
+            Items.pop(c)
 
 
 def editempty():
