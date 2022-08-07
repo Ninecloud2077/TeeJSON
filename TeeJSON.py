@@ -103,7 +103,22 @@ def edititem():
                 l[0]=c
             Items[l[0]]=l[1]
             continue
+        elif len(Items.keys())>2:
         Items.pop(c)
+
+
+def editempty():
+    global Items
+    msgbox('将会依次显示所有未赋值的键。')
+    for k,v in Items.items():
+        if not v:
+            while True:
+                nv=enterbox('键：{}\n请输入值。Cancel和空值表示退出。'.format(k),Title)
+                if nv:
+                    Items[k]=nv
+                    break
+                return
+
 
 def output():
     global Items
@@ -124,7 +139,7 @@ def main():
 
         if Items:
             BoxName='已经创建了一个新的键值对！\n退出和新建将不保存键值对。'
-            ChoiceList=('新建键值对','编辑键值对','导出键值对','退出')
+            ChoiceList=('新建键值对','编辑键值对','补缺空值','导出键值对','退出')
         else:
             BoxName='TeeJSON:快速链接翻译文本！'
             ChoiceList=('新建键值对','导入键值对','退出')
@@ -137,6 +152,8 @@ def main():
             loadfile()
         elif c=='编辑键值对':
             edititem()
+        elif c=='补缺空值':
+            editempty()
         elif c=='导出键值对':
             output()
         elif c=='退出' or (not c):
