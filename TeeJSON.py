@@ -53,12 +53,43 @@ def loadfile():
                 Items[j]=''
     '''
 
+
+
+
+def moveitem():
+    global Items
+    c=choicebox('下面展示了当前所有的键。选中一个键进行移动。',Title,Items.keys())
+    if c:
+        while True:
+            nk=enterbox('请输入新的键。',Title)
+            if nk:
+                break
+            msgbox('不支持空键！',Title)
+
+        if ynbox('移动键值对：{}:{} 到新的键 {} ？'.format(c,Items[c],nk),Title):
+            Items[nk]=Items[c]
+            Items.pop(c)
+        return
+
+
 def edititem():
     global Items
     
     while True:
-        c=choicebox('下面展示了当前所有的键。选中一个键进行编辑。',Title,Items.keys())
+        keys=[]
+        for i in Items.keys():
+            keys.append(i)
+        keys+=(r'##%% 删除键值对 ##%%',r'##%% 移动键值对 ##%%')
+
+        c=choicebox('下面展示了当前所有的键。选中一个键进行编辑。',Title,keys)
         if c:
+            if c==r'##%% 删除键值对 ##%%':
+                delitem()
+                continue
+            elif c==r'##%% 移动键值对 ##%%':
+                moveitem()
+                continue
+
             l=multenterbox('编辑键。',Title,['键：','值：'],[c,Items[c]])
         else:
             return
