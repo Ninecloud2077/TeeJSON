@@ -28,8 +28,10 @@ def loadfile():
     i=choicebox('选择导入方式。按下Cancel键表示导入结束。',Title,choices=['导入键','直接导入json键值对'])
 
     if i=='导入键':
+        msgbox('注意：使用utf-8编码格式。',Title)
         k=fileopenbox('导入键',Title)
-        with open(k,'r') as k:
+        if k:
+            with open(k,'r',encoding='utf-8') as k:
             r=k.readlines()
             for j in r:
                 Items[j]=''
@@ -37,7 +39,9 @@ def loadfile():
     elif i=='直接导入json键值对':
         msgbox('注意：使用utf-8编码格式。',Title)
         try:
-            r=json.load(open(fileopenbox('导入键值对',Title),'r',encoding='utf-8'))
+            k=fileopenbox('导入键值对',Title)
+            if k:
+                r=json.load(open(k,'r',encoding='utf-8'))
             for j in r['translation']:
                 Items[j['key']]=j['value']
 
