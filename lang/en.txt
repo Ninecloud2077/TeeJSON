@@ -1,0 +1,41 @@
+Writing items.\nPress Cancel means to end.
+Key
+Value
+Empty key doesn't allowed!
+The number of items({}) is too less(2 least)!
+Switch the way to input.Press Cancel to end.
+Input keys
+Input JSON k&v
+Attention:encoding utf-8.
+Input items
+Error when loading json:{}
+There are all of keys the following.switch one to remove.
+Are you sure to remove item: {}:{} ?
+Failed to remove:The number of items is too less(2 least)!
+Success!
+There are all of keys the following.switch one to move.
+Write down new key.
+Empty key doesn't allowed!
+Move item: {}:{} to new key {} ?
+Success!
+##%% Remove item ##%%
+##%% Move item ##%%
+There are all of keys the following.switch one to edit.
+You are editing the item.
+Key:
+Value:
+Now we'll show all of keys with empty value one by one.
+Key: {}\nPlease write down value.Press Cancel or write empty value means exit.
+Print file
+Success.
+There's already a new item now!\nwe won't save items when exit or overwrite.
+Create new items
+Edit items
+Fill empty values
+Print values
+Exit
+TeeJSON:Link your translation easily!
+Switch languages - 更换语言
+Switch language.\n选择您的语言。
+Chinese - 中文
+英文 - English

@@ -8,7 +8,7 @@ Items={}
 
 def initlang(language='cn.txt'):
     global lang
-    with open(language,'r',encoding='utf-8') as l:
+    with open('lang/'+language,'r',encoding='utf-8') as l:
         lang=[i.replace('\\n','\n')for i in l.readlines()]
 initlang()
 
@@ -149,6 +149,15 @@ def output():
         p.write(g)
         msgbox(lang[29],Title)
 
+def langswitch():
+    c=choicebox(lang[38],Title,lang[39:41])
+    if c:
+        if c==lang[39]:
+            initlang('cn.txt')
+        elif c==lang[40]:
+            initlang('en.txt')
+
+
 
 def main():
     while True:
@@ -157,10 +166,10 @@ def main():
 
         if Items:
             BoxName=lang[30]
-            ChoiceList=(lang[31],lang[32],lang[33],lang[34],lang[35])
+            ChoiceList=(lang[31],lang[32],lang[33],lang[34],lang[35],lang[37])
         else:
             BoxName=lang[36]
-            ChoiceList=(lang[31],lang[9],lang[35])
+            ChoiceList=(lang[31],lang[9],lang[35],lang[37])
         
         c=choicebox(BoxName,Title,choices=ChoiceList)
 
@@ -174,6 +183,8 @@ def main():
             editempty()
         elif c==lang[34]:
             output()
+        elif c==lang[37]:
+            langswitch()
         elif c==lang[35] or (not c):
             return
 
