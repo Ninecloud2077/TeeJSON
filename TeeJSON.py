@@ -5,7 +5,7 @@ Title='TeeJson'
 
 Items={}
 
-
+#索引+1=文本文档中的行数
 def initlang(language='cn.txt'):
     global lang
     with open('lang/'+language,'r',encoding='utf-8') as l:
@@ -14,11 +14,8 @@ initlang()
 
 def new():
     global Items
-    Items={}
-
     while True:
-            m=multenterbox(msg=lang[0],title=Title,fields=[lang[1],lang[2]])
-
+            m=multenterbox(msg=lang[0],title=Title,fields=[lang[24],lang[25]])
             if m:
                 if not m[0]:
                     msgbox(lang[3],Title)
@@ -32,16 +29,42 @@ def new():
 
 def loadfile():
     global Items
-    i=choicebox(lang[5],Title,choices=[lang[6],lang[7]])
+    i=choicebox(lang[5],Title,choices=[lang[6],lang[44],lang[7]])
 
     if i==lang[6]:
         msgbox(lang[8],Title)
         k=fileopenbox(lang[6],Title)
         if k:
             with open(k,'r',encoding='utf-8') as k:
-                r=k.readlines()
+                r=[i.strip('\n')for i in k.readlines()] 
                 for j in r:
                     Items[j]=''
+
+    elif i==lang[44]:
+        msgbox(lang[45],Title)
+        msgbox(lang[8],Title)
+        k=fileopenbox(lang[6],Title)
+        if not k:
+            return
+        v=fileopenbox(lang[46],Title)
+        if not v:
+            return
+        
+        with open(k,'r',encoding='utf-8') as kfile:
+            with open(v,'r',encoding='utf-8') as vfile:
+                k,v=kfile.readlines(),vfile.readlines()
+
+                if len(k)>len(v):
+                    v+=['' for i in range(len(k)-len(v))]
+                elif len(v)>len(k):
+                    for i in range(len(v)-len(k)):
+                        e=enterbox(lang[47].format(v[len(k)+i]),Title)
+                        if not e:
+                            return
+                        k.append(e)
+                
+        for i,j in dict(zip(k,v)).items():
+            Items[i]=j
 
     elif i==lang[7]:
         msgbox(lang[8],Title)
@@ -54,15 +77,6 @@ def loadfile():
 
         except json.decoder.JSONDecodeError as e:
             msgbox(lang[10].format(e),Title)
-
-    '''
-    elif i=='导入值':
-        k=fileopenbox('导入值',Title) 
-        with open(k,'r') as k:
-            r=k.readlines()
-            for j in r:
-                Items[j]=''
-    '''
 
 
 def delitem():
@@ -96,12 +110,20 @@ def moveitem():
 
 def edititem():
     global Items
-    
+    showk=0
     while True:
         keys=[]
-        for i in Items.keys():
-            keys.append(i)
+        if showk:
+            for k,v in Items.items():
+                keys.append('{}:{}'.format(k,v))
+        else:
+            for i in Items.keys():
+                keys.append(i)
         keys+=(lang[20],lang[21])
+        if showk:
+            keys.append(lang[49])
+        else:
+            keys.append(lang[48])
 
         c=choicebox(lang[22],Title,keys)
         if c:
@@ -110,6 +132,12 @@ def edititem():
                 continue
             elif c==lang[21]:
                 moveitem()
+                continue
+            elif c==lang[48]:
+                showk=1
+                continue
+            elif c==lang[49]:
+                showk=0
                 continue
 
             l=multenterbox(lang[23],Title,[lang[24],lang[25]],[c,Items[c]])
@@ -121,8 +149,6 @@ def edititem():
                 l[0]=c
             Items[l[0]]=l[1]
             continue
-        elif len(Items.keys())>2:
-            Items.pop(c)
 
 
 def editempty():
@@ -149,6 +175,13 @@ def output():
         p.write(g)
         msgbox(lang[29],Title)
 
+
+def itemclear():
+    global Items
+    if ynbox(lang[43],Title):
+        Items={}
+
+
 def langswitch():
     c=choicebox(lang[38],Title,lang[39:41])
     if c:
@@ -156,21 +189,29 @@ def langswitch():
             initlang('cn.txt')
         elif c==lang[40]:
             initlang('en.txt')
+        msgbox(lang[41],Title)
 
 
 
 def main():
+    global Items
     while True:
-        ChoiceList=()
+        ChoiceList=[]
         BoxName=''
 
         if Items:
             BoxName=lang[30]
-            ChoiceList=(lang[31],lang[32],lang[33],lang[34],lang[35],lang[37])
+            ChoiceList=[lang[31],lang[9],lang[32],lang[42],lang[34],lang[35],lang[37]]
+
+            for i in Items.values():
+                if not i:
+                    ChoiceList.insert(3,lang[33])
+                    break
+        
         else:
             BoxName=lang[36]
-            ChoiceList=(lang[31],lang[9],lang[35],lang[37])
-        
+            ChoiceList=[lang[31],lang[9],lang[37],lang[35]]
+
         c=choicebox(BoxName,Title,choices=ChoiceList)
 
         if c==lang[31]:
@@ -185,6 +226,8 @@ def main():
             output()
         elif c==lang[37]:
             langswitch()
+        elif c==lang[42]:
+            itemclear()
         elif c==lang[35] or (not c):
             return
 

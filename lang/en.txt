@@ -39,3 +39,12 @@ Switch languages - 更换语言
 Switch language.\n选择您的语言。
 Chinese - 中文
 英文 - English
+Success!
+Clear items
+Are you sure to clear all items?
+load key then values
+TeeJSON can zip key and value autoly.\nwe'll set an empty value for extra keys,\nand write down key right now for extra values.
+Input values
+Value:{}\nPlease write down key.Press Cancel or write empty value means exit.
+##%% Show values(don't use when items are too long) ##%%
+##%% Hide values ##%%
